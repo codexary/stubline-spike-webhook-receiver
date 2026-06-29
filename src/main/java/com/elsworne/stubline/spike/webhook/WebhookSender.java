@@ -7,6 +7,7 @@ import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 
+/** Sends sample signed webhooks to the receiver. */
 public final class WebhookSender {
   private WebhookSender() {}
 

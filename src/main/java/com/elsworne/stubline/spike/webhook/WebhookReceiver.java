@@ -16,10 +16,12 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+/** Verifies and deduplicates payment webhooks. */
 public final class WebhookReceiver implements AutoCloseable {
-  private static final Logger LOG = Logger.getLogger(WebhookReceiver.class.getName());
+  private static final Logger LOG = LoggerFactory.getLogger(WebhookReceiver.class);
   private static final Duration TOLERANCE = Duration.ofMinutes(5);
   private final byte[] secret;
   private final Clock clock;

@@ -3,10 +3,12 @@ package com.elsworne.stubline.spike.webhook;
 import java.nio.charset.StandardCharsets;
 import java.time.Clock;
 import java.util.concurrent.CountDownLatch;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+/** Starts the signed webhook receiver. */
 public final class WebhookMain {
-  private static final Logger LOG = Logger.getLogger(WebhookMain.class.getName());
+  private static final Logger LOG = LoggerFactory.getLogger(WebhookMain.class);
 
   private WebhookMain() {}
 

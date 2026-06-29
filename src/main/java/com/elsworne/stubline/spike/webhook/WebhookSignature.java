@@ -8,6 +8,7 @@ import java.util.HexFormat;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
+/** Signs and verifies webhook payload bytes. */
 public final class WebhookSignature {
   private WebhookSignature() {}
 
