@@ -41,6 +41,25 @@ class WebhookReceiverTest {
     }
   }
 
+  @Test
+  void acceptsBothToleranceEdgesAndRejectsOneSecondOutside() throws Exception {
+    byte[] secret = "test-secret".getBytes(StandardCharsets.UTF_8);
+    Clock clock = Clock.fixed(Instant.parse("2026-10-29T00:00:00Z"), ZoneOffset.UTC);
+    try (var server = new WebhookReceiver(0, secret, clock);
+        var client = HttpClient.newHttpClient()) {
+      server.start();
+      URI uri = URI.create("http://localhost:" + server.port() + "/webhooks/payments");
+      for (int offset : new int[] {-301, -300, 300, 301}) {
+        byte[] body = ("{\"id\":\"edge-" + offset + "\"}").getBytes(StandardCharsets.UTF_8);
+        long timestamp = clock.instant().getEpochSecond() + offset;
+        assertEquals(
+            Math.abs(offset) == 300 ? 204 : 401,
+            send(client, uri, body, timestamp, WebhookSignature.sign(secret, timestamp, body)));
+      }
+      assertEquals(2, server.acceptedCount());
+    }
+  }
+
   private static int send(HttpClient client, URI uri, byte[] body, long timestamp, String signature)
       throws Exception {
     var request =
